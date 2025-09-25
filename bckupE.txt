@@ -1,0 +1,64 @@
+
+DATABASE_URL=""
+
+SECRET_KEY=generate-a-random-string-here
+ALGORITHM=HS256
+ENVIRONMENT=development
+CORS_ORIGINS=http://localhost,http://localhost:5173
+
+# If you're using AWS:
+AWS_ACCESS_KEY_ID=your-aws-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret
+AWS_REGION=us-east-1
+
+# For Google Cloud:
+GOOGLE_CLOUD_PROJECT=your-project-id
+GOOGLE_APPLICATION_CREDENTIALS=path/to/credentials.json
+
+ENABLED_PROVIDERS=aws,gcp
+
+
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+TENANT_ID = ""
+
+AZURE_AD_CLIENT_ID=""
+AZURE_AD_CLIENT_SECRET=""
+AZURE_AD_TENANT_ID=""
+AZURE_AD_REDIRECT_URI="http://localhost:8000/get_token"
+AZURE_AD_APP_ID_URI=""
+VITE_AZURE_AD_CLIENT_ID = ""
+VITE_AZURE_AD_AUTHORITY = ""
+
+
+
+
+
+Fo   —  
+VITE_API_BASE_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000
+
+# Optional external services:
+VITE_ENABLE_FINOPS=true
+VITE_ENABLE_STACK=true
+VITE_ENABLE_MONITORING=false
+VITE_ENABLE_SECURITY=false
+
+VITE_DEFAULT_PROVIDER=aws
+
+
+VITE_AZURE_AD_CLIENT_ID = ""
+VITE_AZURE_AD_TENANT_ID = ""
+
+
+VITE_AZURE_AD_REDIRECT_URI= "http://localhost:5173/auth/azure/callback"
+
+# Using specific tenant for Azure AD authentication
+VITE_AZURE_AD_AUTHORITY=""
+
+
+
+
+
+
+
