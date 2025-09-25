@@ -57,7 +57,43 @@ VITE_AZURE_AD_REDIRECT_URI= "http://localhost:5173/auth/azure/callback"
 VITE_AZURE_AD_AUTHORITY=""
 
 
-
+Get the Token:
+* Copy the URL below. I have already filled it in with your TENANT_ID, CLIENT_ID, and REDIRECT_URI. plaintext    https://login.microsoftonline.com/TENANTID/oauth2/v2.0/authorize?client_id=&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fget_token&scope=openid%20profile%20email&response_mode=fragment&nonce=12345
+*    (Note: The redirect_uri has been URL-encoded for you.)
+* Paste this URL into your browser's address bar and hit Enter.
+* You will be asked to sign in with an account from your Azure AD tenant.
+* After signing in, you will be redirected to http://localhost:8000/get_token. Your browser will likely show an error like "This site can’t be reached" because your backend API isn't designed to be viewed in a browser. This is expected and perfectly fine.
+* The important part is in the browser's address bar. It will look like this: http://localhost:8000/get_token#id_token=eyJ0eXAiOiJKV1...
+* Carefully copy the entire long string of characters that comes after id_token= and before the next & (if any). This is your ID Token.
+Part 2: Use the ID Token in Postman
+Now you can use this token to test your backend endpoints as you outlined.
+1. Test the /api/azure-auth/get_token Endpoint
+This endpoint exchanges the Azure AD id_token for your application's own session cookie.
+* Request Type: POST
+* URL: http://localhost:8000/api/azure-auth/get_token
+* Headers Tab:
+    * Add a key Content-Type with the value application/json.
+    * Add a key Authorization with the value Bearer <YOUR_ID_TOKEN> (paste the token you copied from the browser here).
+* Body Tab:
+    * Select raw and choose JSON from the dropdown.
+    * Enter an empty JSON object: {}.
+* Send the request.
+Expected Result:
+* Status: 200 OK
+* Body: A JSON response with user details and a "Login successful" message.
+* Cookies: In Postman's response section, click the "Cookies" tab. You should see an access_token cookie has been set. Postman will automatically use this for future requests to localhost:8000.
+2. Test the /api/azure-auth/protected-azure-route Endpoint
+This endpoint is protected by your get_current_azure_user dependency, which validates the Azure AD token.
+* Request Type: GET
+* URL: http://localhost:8000/api/azure-auth/protected-azure-route
+* Headers Tab:
+    * Just like the first request, you must provide the Azure AD token here. Add a key Authorization with the value Bearer <YOUR_ID_TOKEN>. (Note: Your current code requires the Azure AD token for this route, not the cookie you just received. If you intended to use the cookie, the dependency for this route would need to be changed.)
+* Send the request.
+Expected Result:
+* Status: 200 OK
+* Body: A success message like {"message": "Hello, Your Name! You are authenticated via Azure AD.", "user_email": "your.email@example.com"}.
+If you get a 401 Unauthorized or 403 Forbidden error, double-check that you have correctly copied the full ID token and included the Bearer prefix in the Authorization header.
+You have now successfully validated your Azure AD authentication flow!
 
 
 
